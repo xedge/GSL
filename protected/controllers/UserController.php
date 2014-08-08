@@ -32,7 +32,7 @@ class UserController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','index','view','logout','admin','delete'),
+				'actions'=>array('create','update','index','view','logout','admin','delete','email'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -193,4 +193,15 @@ class UserController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+        
+        public  function actionEmail()
+        {
+            $mail=new YiiMailer();
+            $mail->setFrom('dummypengguna@gmail.com','Dummy Dum');
+            $mail->setTo('yanuar.valentino@gmail.com');
+            $mail->setSubject('Tes subject');
+            $mail->setBody('Simple message');
+            $mail->send();
+            $this->redirect(Yii::app()->homeUrl);
+        }
 }
