@@ -1,4 +1,4 @@
-<?php /* @var $this Controller */ ?>
+<?php?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -60,45 +60,53 @@
 	<!-- the script which handles all the access to plugins etc... -->
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
-
-<body>
-
-<div class="container" id="page">
-
-	
-		
-	<!-- header -->
+    <body>
+        <div id="pageoptions"></div>
+        
         <header>
-            <div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
-            <div id="header">
-            <ul id="headernav">
-                <li>
-                    <ul>
-                        <li><?php echo CHtml::link('Home',array('site/index'))?></li>
-                        <li><?php echo CHtml::link('Login',array('site/login'))?></li>
-                    </ul>
-                </li>
-            </ul>
+            <div id="logo">
+                logo here
             </div>
-            <!-- mainmenu -->
+            
+            <div id="header">
+                <ul id="headernav">
+                    <li>
+                        <ul class>
+                            <li><?php echo CHtml::link('Home',array('user/index')) ?></li>
+                            <?php if (Yii::app()->user->isGuest):
+                                ?>
+                            <li><?php echo CHtml::link('Login',array('user/login') )?></li>
+                            <?php
+                            else :
+                            ?>
+                            
+                            <li><?php echo CHtml::link('Logout',array('user/logout'),array('display'=>!Yii::app()->user->isGuest)) ?></li>
+                            <?php endif?>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </header>
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
-
-	<?php echo $content; ?>
-
-	<div class="clear"></div>
-
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
-	</div><!-- footer -->
-
-</div><!-- page -->
-
-</body>
+        
+        <nav>
+            <ul id="nav">
+                <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Create User"),array('user/create')) ?></li>
+                <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage User"),array('user/admin')) ?></li>
+            </ul>
+        </nav>
+        
+        <section id="content">
+            <?php echo $content; ?>
+        </section>
+        
+        <footer></footer>
+        
+    </body>
 </html>
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
