@@ -877,3 +877,57 @@ Stack trace:
 REQUEST_URI=/Yii/index.php?r=user/email
 HTTP_REFERER=http://localhost/Yii/index.php
 ---
+2014/08/11 08:13:34 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in D:\xampp\htdocs\GSL\trunk\yii\web\CController.php:336
+Stack trace:
+#0 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#2 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilter.php(40): CFilterChain->run()
+#3 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#4 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#5 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#6 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(291): CFilterChain->run()
+#7 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 D:\xampp\htdocs\GSL\trunk\yii\web\CWebApplication.php(282): CController->run('view')
+#9 D:\xampp\htdocs\GSL\trunk\yii\web\CWebApplication.php(141): CWebApplication->runController('user/view')
+#10 D:\xampp\htdocs\GSL\trunk\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 D:\xampp\htdocs\GSL\trunk\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/gsl/trunk/index.php?r=user/view
+HTTP_REFERER=http://localhost/gsl/trunk/index.php?r=user/login
+---
+2014/08/11 08:15:37 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in D:\xampp\htdocs\GSL\trunk\yii\web\CController.php:336
+Stack trace:
+#0 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#2 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilter.php(40): CFilterChain->run()
+#3 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#4 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#5 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#6 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(291): CFilterChain->run()
+#7 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 D:\xampp\htdocs\GSL\trunk\yii\web\CWebApplication.php(282): CController->run('view')
+#9 D:\xampp\htdocs\GSL\trunk\yii\web\CWebApplication.php(141): CWebApplication->runController('user/view')
+#10 D:\xampp\htdocs\GSL\trunk\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 D:\xampp\htdocs\GSL\trunk\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/gsl/trunk/index.php?r=user/view
+HTTP_REFERER=http://localhost/gsl/trunk/index.php?r=user/login
+---
+2014/08/11 08:15:41 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in D:\xampp\htdocs\GSL\trunk\yii\web\CController.php:336
+Stack trace:
+#0 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#2 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilter.php(40): CFilterChain->run()
+#3 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#4 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#5 D:\xampp\htdocs\GSL\trunk\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#6 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(291): CFilterChain->run()
+#7 D:\xampp\htdocs\GSL\trunk\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 D:\xampp\htdocs\GSL\trunk\yii\web\CWebApplication.php(282): CController->run('view')
+#9 D:\xampp\htdocs\GSL\trunk\yii\web\CWebApplication.php(141): CWebApplication->runController('user/view')
+#10 D:\xampp\htdocs\GSL\trunk\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 D:\xampp\htdocs\GSL\trunk\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/gsl/trunk/index.php?r=user/view
+HTTP_REFERER=http://localhost/gsl/trunk/index.php?r=user/login
+---

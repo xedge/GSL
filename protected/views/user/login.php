@@ -7,9 +7,9 @@
  */
 ?>
 <header>
-    <div id="logo">
+    <!--<div id="logo">
         
-    </div>
+    </div>-->
 </header>
 <section id="content">
     <?php $form=$this->beginWidget('CActiveForm', array(
@@ -18,22 +18,23 @@
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),
-)); ?><fieldset>
-            <label>Login</label>
+)); ?>
+<fieldset>
+    <label>Login</label>
+    <section>
+        <?php echo $form->labelEx($model,'Username'); ?>
+        <div><?php echo $form->textField($model,'Username'); ?></div>
+    </section>
 
-            <section>
-                <?php echo $form->labelEx($model,'Username'); ?>
-                <?php echo $form->textField($model,'Username'); ?>
-            </section>
-            
-            <section>
-		<?php echo $form->labelEx($model,'Password'); ?>
-		<?php echo $form->passwordField($model,'Password'); ?>
-            </section>
-            <section>
-		<?php echo CHtml::submitButton('Login'); ?>
-            </section>
-        </fieldset>
+    <section>
+        <?php echo $form->labelEx($model,'Password'); ?>
+        <div><?php echo $form->passwordField($model,'Password'); ?></div>
+    </section>
+    <section>
+        <div><button class="fr submit">Login</button></div>
+    </section>
+</fieldset>
+    
 <?php $this->endWidget(); ?>
 </section>
 <?php 
