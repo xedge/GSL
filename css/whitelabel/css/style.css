@@ -274,13 +274,14 @@ header{
 	-webkit-border-top-right-radius:4px; -moz-border-radius-topright:4px; border-top-right-radius:4px;
 }
 #logo{
-	height:24px;
+	height:48px;
 	padding:18px 0 18px 15px;
-	width:224px;
+	width:100%px;
 	border:0;
 	-webkit-border-top-left-radius:4px; -moz-border-radius-topleft:4px; border-top-left-radius:4px;
-	background:url(images/logo.png) left center no-repeat;
-	
+	background:url(images/GSL-logo.png) no-repeat;
+        background-size: contain;
+	background-position: center top;
 }
 #logo, #logo a{
 	font-weight:700;
@@ -1805,7 +1806,7 @@ body{
 }
 
 header{
-	height:60px;
+	height:80px;
 	z-index:2;
 }
 nav{

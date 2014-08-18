@@ -61,18 +61,25 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
     <body>
-        <div id="pageoptions"></div>
+        <div id="pageoptions">
+			<ul>
+				<li><a href="login.html">Logout</a></li>
+				<li><a href="#" id="wl_config">Configuration</a></li>
+				<li><a href="#">Settings</a></li>
+			</ul>
+
+        </div>
         
         <header>
             <div id="logo">
                 logo here
             </div>
             
-            <div id="header">
-                <ul id="headernav">
+            <div id="header"> 
+                <!--<ul id="headernav">
                     <li>
                         <ul class>
-                            <li><?php echo CHtml::link('Home',array('user/index')) ?></li>
+                            <li><?php /*echo CHtml::link('Home',array('user/index')) ?></li>
                             <?php if (Yii::app()->user->isGuest):
                                 ?>
                             <li><?php echo CHtml::link('Login',array('user/login') )?></li>
@@ -81,15 +88,17 @@
                             ?>
                             
                             <li><?php echo CHtml::link('Logout',array('user/logout'),array('display'=>!Yii::app()->user->isGuest)) ?></li>
-                            <?php endif?>
+                            <?php endif */?>
                         </ul>
                     </li>
                 </ul>
-            </div>
+            </div>-->
         </header>
         
         <nav>
             <ul id="nav">
+                <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Form SPS"),array('user/formsps')) ?></li>
+                <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Report"),array('user/export')) ?></li>
                 <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Create User"),array('user/create')) ?></li>
                 <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage User"),array('user/admin')) ?></li>
             </ul>
@@ -104,9 +113,4 @@
     </body>
 </html>
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 

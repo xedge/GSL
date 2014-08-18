@@ -6,10 +6,11 @@
  * and open the template in the editor.
  */
 ?>
+ 
 <header>
-    <!--<div id="logo">
-        
-    </div>-->
+    <div id="logo">
+              
+    </div>
 </header>
 <section id="content">
     <?php $form=$this->beginWidget('CActiveForm', array(
