@@ -11,7 +11,7 @@
 <head>
 	<meta charset="utf-8">
 	
-	<title>White Label | Login</title>
+	<title>GSL | Login</title>
 	
 	<meta name="description" content="">
 	<meta name="author" content="revaxarts.com">

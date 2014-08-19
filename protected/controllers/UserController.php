@@ -32,7 +32,7 @@ class UserController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','index','view','logout','admin','delete','email'),
+				'actions'=>array('create','update','index','view','logout','admin','delete','email','formsps','export'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -75,6 +75,26 @@ class UserController extends Controller
 		}
 
 		$this->render('create',array(
+			'model'=>$model,
+		));
+	}
+        
+        /**
+	 * Display Form Pemesanan Sementara.
+	 * 
+	 */
+	public function actionFormsps()
+	{
+		$model=new Sps();
+
+		if(isset($_POST['User']))
+		{
+			$model->attributes=$_POST['User'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->IdUser));
+		}
+
+		$this->render('formsps',array(
 			'model'=>$model,
 		));
 	}
@@ -203,5 +223,23 @@ class UserController extends Controller
             $mail->setBody('Simple message');
             $mail->send();
             $this->redirect(Yii::app()->homeUrl);
+        }
+        
+        public function actionExport()
+        {
+            $model = new User();
+            $this->widget('ext.EExcelView', array(
+                'grid_mode'=>'export',
+                'title' => 'Daftar User',
+                'dataProvider' => $model->search(),
+                'filter' => $model,
+                'columns' => array(
+                        'IdUser',
+                        'Username',
+                        'Status',
+                ),
+            ));
+            
+           
         }
 }
