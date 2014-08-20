@@ -10,7 +10,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Grand Sungkono Lagoon',
-        'defaultController'=>'User',
+        'defaultController'=>'Login',
 	// preloading 'log' component
 	'preload'=>array('log'),
 
@@ -39,7 +39,8 @@ return array(
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
-                        'loginUrl'=>'index.php?r=user/login'
+                        'loginUrl'=>'index.php?r=login/login',
+                        'class'=>'WebUser'
 		),
 		// uncomment the following to enable URLs in path-format
 		/*
@@ -58,7 +59,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=gsl',
+			'connectionString' => 'mysql:host=localhost;dbname=mydb',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',
