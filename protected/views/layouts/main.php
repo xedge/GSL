@@ -63,7 +63,7 @@
     <body>
         <div id="pageoptions">
 			<ul>
-				<li><a href="login.html">Logout</a></li>
+				<li><?php echo CHtml::link('Logout',array('user/logout'))?></li>
 				<li><a href="#" id="wl_config">Configuration</a></li>
 				<li><a href="#">Settings</a></li>
 			</ul>
@@ -97,10 +97,18 @@
         
         <nav>
             <ul id="nav">
+                <?php if(Yii::app()->user->roles=='Super Admin'): ?>
+                <li class="i_admin_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Index"),array('user2/index')) ?></li>
+                <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Create User"),array('user2/create')) ?></li>
+                <li class="i_users"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage User"),array('user2/admin')) ?></li>
+                <?php 
+                else: 
+                    ?>
                 <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Form SPS"),array('user/formsps')) ?></li>
                 <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Report"),array('user/export')) ?></li>
                 <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Create User"),array('user/create')) ?></li>
                 <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage User"),array('user/admin')) ?></li>
+                <?php endif;?>
             </ul>
         </nav>
         
