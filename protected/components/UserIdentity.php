@@ -25,21 +25,49 @@ class UserIdentity extends CUserIdentity
 			'admin'=>'admin',
 		);
              * */
-                $record=User::model()->findByAttributes(array('Username'=>$this->username));
+                $record=  User2::model()->findByAttributes(array('USER_NAME'=>$this->username));
                 if($record===null)
                     $this->errorCode=self::ERROR_USERNAME_INVALID;
-                else if($record->Password!==$this->password)
+                else if($record->UT_ID=='0')
+                {
+                    if($record->PASSWORD!==$this->password)
                     $this->errorCode=self::ERROR_PASSWORD_INVALID;
+                    else
+                {
+                        $this->setUser($record);
+                    
+                }
+                }
+                else if(!CPasswordHelper::verifyPassword($this->password, $record->PASSWORD))
+                {
+                    $this->errorCode=self::ERROR_PASSWORD_INVALID;
+                }
                 else
                 {
-                    $this->_id=$record->IdUser;
-                    $this->setState('id', $record->IdUser);
-                    $this->errorCode=self::ERROR_NONE;
+                    $this->setUser($record);
                 }
 		return !$this->errorCode;
 	}
         public function getId()
         {
-        return $this->_id;
+            return $this->_id;
+        }
+        
+        private function setUser($record)
+        {
+            $this->_id=$record->USER_ID;
+            $this->setState('id', $record->USER_ID);
+            $this->errorCode=self::ERROR_NONE;
+            $this->setState('roles', $record->getRelated('uT')->UT_NAME);
+            $this->setLH();
+        }
+
+
+        public function setLH()
+        {
+            $lh = new LoginHist;
+            $lh->DATE = date("Y-m-d H:i:s");
+            $lh->USER_USER_ID = $this->_id;
+            $lh->save();
         }
 }
