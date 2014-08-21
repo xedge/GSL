@@ -19,9 +19,14 @@
         private function redir()
         {
             if(Yii::app()->user->roles=='Super Admin')
-                    {
-                        $this->redirect(array('user2/index'));
-                    }
+                {
+                    $this->redirect(array('user2/index'));
+                }
+            else if(Yii::app()->user->roles=='Marketing')
+            {
+                    $this->redirect(array('buyer/index'));
+            }
+                    
         }
         public function actionLogin()
         {

@@ -29,7 +29,11 @@ $form = $this->beginWidget('CActiveForm',array(
     </section>
     <section>
         <?php echo $form->labelEx($model,'UT_ID'); ?>
+        <?php if($model->isNewRecord):?>
         <div><?php echo CHtml::dropDownList('User2[UT_ID]', $model->UT_ID, array('User Type'=>$model->getAllUT()))?></div>
+        <?php else:?>
+        <div><?php echo CHtml::label($model->uT->UT_NAME,'UT')?></div>
+        <?PHP         endif;?>
     </section>
     <section>
             <div><button class="fr submit">

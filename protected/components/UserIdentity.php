@@ -60,6 +60,8 @@ class UserIdentity extends CUserIdentity
             $this->errorCode=self::ERROR_NONE;
             $this->setState('roles', $record->getRelated('uT')->UT_NAME);
             $this->setLH();
+            $record->LAST_LOGIN = date("Y-m-d H:i:s");
+            $record->save();
         }
 
 
