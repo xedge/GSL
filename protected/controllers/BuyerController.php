@@ -59,6 +59,12 @@ class BuyerController extends Controller
         $this->render('update',array('model'=>$model));
     }
     
+    public function actionManage()
+    {
+        $model = Buyer::model()->findAll();
+        $this->render('manage',array('model'=>$model));
+    }
+    
     public function actionIndex()
     {
         $model = User2::model()->findByPk(Yii::app()->user->id);

@@ -170,10 +170,10 @@ class UserController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new User('search');
+		$model=new User2('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['User']))
-			$model->attributes=$_GET['User'];
+		if(isset($_GET['User2']))
+			$model->attributes=$_GET['User2'];
 
 		$this->render('admin',array(
 			'model'=>$model,

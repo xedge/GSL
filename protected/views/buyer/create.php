@@ -5,11 +5,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 ?>
-<div class="g12">
-    <h1>
-        Welcome <?php echo $model->NAME?>
-    </h1>
-    <p>Your last login is <?php echo $model->LAST_LOGIN?></p>
+<div class='g12'>
+    <h1>Create Buyer</h1>
+    
+    <?php $this->renderPartial('_form',array('model'=>$model));?>
 </div>
+
+

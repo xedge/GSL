@@ -100,7 +100,11 @@
                 <?php if(Yii::app()->user->roles=='Super Admin'): ?>
                 <li class="i_admin_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Index"),array('user2/index')) ?></li>
                 <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Create User"),array('user2/create')) ?></li>
-                <li class="i_users"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage User"),array('user2/admin')) ?></li>
+                <li class="i_users"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage User"),array('user2/manage')) ?></li>
+                <?php elseif(Yii::app()->user->roles=='Marketing'):
+                ?>
+                <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Buyer"),array('buyer/create')) ?></li>
+                <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage Buyer"),array('buyer/manage')) ?></li>
                 <?php 
                 else: 
                     ?>
