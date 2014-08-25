@@ -105,7 +105,8 @@
                 ?>
                 <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Buyer"),array('buyer/create')) ?></li>
                 <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage Buyer"),array('buyer/manage')) ?></li>
-                <?php 
+                <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Order"),array('sps/create')) ?></li>
+                    <?php 
                 else: 
                     ?>
                 <li class="i_house"><?php echo CHtml::link(CHtml::tag('span',array(),"Form SPS"),array('user/formsps')) ?></li>
