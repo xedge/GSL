@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 22, 2014 at 11:17 AM
+-- Generation Time: Aug 25, 2014 at 09:14 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -38,13 +38,6 @@ CREATE TABLE IF NOT EXISTS `buyer` (
   PRIMARY KEY (`idBUYER`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
---
--- Dumping data for table `buyer`
---
-
-INSERT INTO `buyer` (`idBUYER`, `NO_ID`, `BUY_NAME`, `ADDRESS_BY_ID`, `ADDRESS`, `PHONE_NUM`, `HP_NUM`, `FAX_NUM`) VALUES
-(1, '3512888955546', 'Ahmad Budi', 'Surabaya', 'Surabaya', '', '081553333333', '');
-
 -- --------------------------------------------------------
 
 --
@@ -61,44 +54,6 @@ CREATE TABLE IF NOT EXISTS `floor` (
   KEY `fk_FLOOR_FLOOR_TYPE1_idx` (`FLOOR_TYPE_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
 
---
--- Dumping data for table `floor`
---
-
-INSERT INTO `floor` (`FLOOR_ID`, `FLOOR_NUMBER`, `TOWER_ID`, `FLOOR_TYPE_ID`) VALUES
-(1, '3', 1, 1),
-(2, '5', 1, 1),
-(3, '6', 1, 1),
-(4, '7', 1, 1),
-(5, '8', 1, 1),
-(6, '9', 1, 1),
-(7, '10', 1, 1),
-(8, '11', 1, 1),
-(9, '12', 1, 1),
-(10, '15', 1, 1),
-(11, '16', 1, 1),
-(12, '17', 1, 1),
-(13, '18', 1, 1),
-(14, '19', 1, 2),
-(15, '20', 1, 2),
-(16, '21', 1, 2),
-(17, '23', 1, 2),
-(18, '25', 1, 2),
-(19, '26', 1, 2),
-(20, '27', 1, 2),
-(21, '28', 1, 2),
-(22, '29', 1, 2),
-(23, '30', 1, 2),
-(24, '32', 1, 2),
-(25, '33', 1, 2),
-(26, '35', 1, 2),
-(27, '36', 1, 2),
-(28, '37', 1, 2),
-(29, '38', 1, 2),
-(30, '39', 1, 2),
-(31, 'PH. 1', 1, 2),
-(32, 'PH. 2', 1, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -110,14 +65,6 @@ CREATE TABLE IF NOT EXISTS `floor_type` (
   `FLOOR_TYPE` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`FT_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `floor_type`
---
-
-INSERT INTO `floor_type` (`FT_ID`, `FLOOR_TYPE`) VALUES
-(1, 'LOW ZONE'),
-(2, 'HIGH ZONE');
 
 -- --------------------------------------------------------
 
@@ -131,26 +78,7 @@ CREATE TABLE IF NOT EXISTS `login_hist` (
   `USER_USER_ID` int(11) NOT NULL,
   PRIMARY KEY (`LH_ID`),
   KEY `fk_LOGIN_HIST_USER1_idx` (`USER_USER_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
-
---
--- Dumping data for table `login_hist`
---
-
-INSERT INTO `login_hist` (`LH_ID`, `DATE`, `USER_USER_ID`) VALUES
-(1, '2014-08-20 09:56:12', 0),
-(2, '2014-08-20 10:04:37', 0),
-(3, '2014-08-21 05:10:39', 0),
-(4, '2014-08-21 07:43:57', 40001),
-(5, '2014-08-21 07:52:09', 0),
-(6, '2014-08-21 09:20:28', 0),
-(7, '2014-08-21 09:49:46', 40001),
-(8, '2014-08-21 09:51:48', 40001),
-(9, '2014-08-21 11:04:18', 40001),
-(10, '2014-08-21 11:06:08', 40001),
-(11, '2014-08-21 11:15:04', 40001),
-(12, '2014-08-21 11:15:16', 0),
-(13, '2014-08-22 05:25:19', 40001);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
@@ -207,16 +135,6 @@ CREATE TABLE IF NOT EXISTS `payment_type` (
   PRIMARY KEY (`PT_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
---
--- Dumping data for table `payment_type`
---
-
-INSERT INTO `payment_type` (`PT_ID`, `PT_NAME`) VALUES
-(1, 'Tunai'),
-(2, 'Tunai Bertahap'),
-(3, 'Angsuran'),
-(4, 'KPA');
-
 -- --------------------------------------------------------
 
 --
@@ -240,13 +158,6 @@ CREATE TABLE IF NOT EXISTS `room` (
   KEY `fk_ROOM_BUYER1_idx` (`OWNER_idBUYER`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
---
--- Dumping data for table `room`
---
-
-INSERT INTO `room` (`ROOM_ID`, `ROOM_NUMBER`, `ROOM_AREA_GROSS`, `ROOM_AREA_NETT`, `FLOOR_ID`, `WING_ID`, `STATUS`, `RT_ID`, `OWNER_idBUYER`) VALUES
-(2, '0301', '49.28', NULL, 1, 1, 'Availabel', 3, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -258,19 +169,6 @@ CREATE TABLE IF NOT EXISTS `room_type` (
   `RT_NAME` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`RT_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
-
---
--- Dumping data for table `room_type`
---
-
-INSERT INTO `room_type` (`RT_ID`, `RT_NAME`) VALUES
-(1, '1BRS'),
-(2, '2BRS'),
-(3, '1BR SUITE'),
-(4, '1BR DELUXE'),
-(5, '2BR DELUXE'),
-(6, '2BR SUITE'),
-(7, '3BR SUITE');
 
 -- --------------------------------------------------------
 
@@ -286,13 +184,6 @@ CREATE TABLE IF NOT EXISTS `tower` (
   KEY `fk_TOWER_TOWER_TYPE1_idx` (`TOWER_TYPE_TT_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
---
--- Dumping data for table `tower`
---
-
-INSERT INTO `tower` (`TOWER_ID`, `TOWER_NAME`, `TOWER_TYPE_TT_ID`) VALUES
-(1, 'VENETIAN', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -304,13 +195,6 @@ CREATE TABLE IF NOT EXISTS `tower_type` (
   `TT_TYPE` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`TT_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `tower_type`
---
-
-INSERT INTO `tower_type` (`TT_ID`, `TT_TYPE`) VALUES
-(1, 'APARTMENT');
 
 -- --------------------------------------------------------
 
@@ -330,16 +214,6 @@ CREATE TABLE IF NOT EXISTS `user2` (
   KEY `fk_USER_USER_TYPE_idx` (`UT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `user2`
---
-
-INSERT INTO `user2` (`USER_ID`, `USER_NAME`, `EMAIL_ADDRESS`, `UT_ID`, `PASSWORD`, `NAME`, `LAST_LOGIN`) VALUES
-(0, 'Root', NULL, 0, 'root', 'root', '2014-08-21 11:15:16'),
-(10001, 'SPV2', 'bambang@olx.com', 1, '$2a$13$x3mpgRGzDogluX/Wymi24eRBbr.4u6pJXmCofjvHF/iZVEUAAyt52', 'Bambang', NULL),
-(10002, 'spp', 'sukodadi@ol.com', 1, '$2a$13$5Z.rLBvDPgPFofI4Zh4DL.slYy5Wj1RDm.CE2a6EXYTcI9iZbntYm', 'suko', NULL),
-(40001, 'marketing1', 'yun@kk.com', 4, '$2a$13$vQ7bNlvQhnx2q6ZKJTcInew65byHPrNXVMYe2k4AB5w.FEWuLvMdq', 'Yuyun', '2014-08-22 05:25:19');
-
 -- --------------------------------------------------------
 
 --
@@ -352,17 +226,6 @@ CREATE TABLE IF NOT EXISTS `user_type` (
   `UT_STATUS` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`UT_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `user_type`
---
-
-INSERT INTO `user_type` (`UT_ID`, `UT_NAME`, `UT_STATUS`) VALUES
-(0, 'Super Admin', NULL),
-(1, 'Supervisor', NULL),
-(2, 'Marketing Manager', NULL),
-(3, 'Admin', NULL),
-(4, 'Marketing', NULL);
 
 -- --------------------------------------------------------
 
@@ -378,16 +241,6 @@ CREATE TABLE IF NOT EXISTS `wing` (
   PRIMARY KEY (`WING_ID`),
   KEY `fk_WING_TOWER1_idx` (`TOWER_ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `wing`
---
-
-INSERT INTO `wing` (`WING_ID`, `WING_NAME`, `WING_TYPE`, `TOWER_ID`) VALUES
-(1, 'WING A - NORTH', NULL, 1),
-(2, 'WING B - NORTH', NULL, 1),
-(3, 'WING B - SOUTH', NULL, 1),
-(4, 'WING A SOUTH', NULL, 1);
 
 --
 -- Constraints for dumped tables
