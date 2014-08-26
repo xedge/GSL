@@ -108,6 +108,7 @@
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Order"),array('sps/create')) ?></li>
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Exhibition"),array('exhibition/createex')) ?></li>
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Ex Detail"),array('exhibition/createexd')) ?></li>
+                <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Customer"),array('exhibition/createcustomer')) ?></li>
                     <?php 
                 else: 
                     ?>

@@ -63,7 +63,7 @@ class ExhibitionController extends Controller{
             $custom->attributes = $_POST['Customer'];
             $custom->save();
         }
-        $this->render('createcus');
+        $this->render('createcus',array('model'=>$custom));
     }
 
     public function createExhibition($model)

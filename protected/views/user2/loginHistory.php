@@ -7,10 +7,18 @@
  */
 
 ?>
+<script type="text/javascript">
+    $(function(){
+        $("#tabel").dataTable({
+            paging:true
+        });
+    })
+
+</script>
 <div class="g12">
     <h1>Login History</h1>
     
-    <table class="datatable">
+    <table id="tabel">
         <thead>
             <tr>
                 <th>

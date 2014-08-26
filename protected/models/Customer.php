@@ -107,4 +107,17 @@ class Customer extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        public function getAllExhibition()
+        {
+            $record = Exhibition::model()->findAll();
+            $list = CHtml::listData($record, 'EX_ID', 'EX_NAME');
+            return $list;
+        }
+        
+        public  function getAllType()
+        {
+            $record = CustomerType::model()->findAll();
+            $list = CHtml::listData($record, 'CT_ID', 'CT_NAME');
+            return $list;
+        }
 }
