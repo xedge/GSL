@@ -4,7 +4,7 @@
  * This is the model class for table "order".
  *
  * The followings are the available columns in table 'order':
- * @property integer $ORDER_ID
+ * @property string $ORDER_ID
  * @property double $PRICE
  * @property double $DISCOUNT
  * @property double $DEAL_PRICE
@@ -33,16 +33,17 @@
  * @property integer $ROOM_ROOM_ID
  *
  * The followings are the available model relations:
- * @property Buyer $bUYERIdBUYER
  * @property PaymentType $pT
  * @property PaymentType $bFPT
- * @property Room $rOOMROOM
  * @property User2 $mUSER
  * @property User2 $mMUSER
+ * @property Buyer $bUYERIdBUYER
+ * @property Room $rOOMROOM
  */
 class Order extends CActiveRecord
 {
-	/**
+    private $id = '/SPS/PTPP-GSL/';
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -59,9 +60,9 @@ class Order extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('ORDER_ID, PT_ID, BF_PT_ID, M_USER_ID, BUYER_idBUYER, ROOM_ROOM_ID', 'required'),
-			array('ORDER_ID, PT_ID, BF_PT_ID, M_USER_ID, MM_USER_ID, BUYER_idBUYER, ROOM_ROOM_ID', 'numerical', 'integerOnly'=>true),
+			array('PT_ID, BF_PT_ID, M_USER_ID, MM_USER_ID, BUYER_idBUYER, ROOM_ROOM_ID', 'numerical', 'integerOnly'=>true),
 			array('PRICE, DISCOUNT, DEAL_PRICE, BOOKING_FEE, REMAINING_BF, ADVANCE_PAYMENT_1, ADVANCE_PAYMENT, PT_PERCENT, INSTALLMENT_PRICE', 'numerical'),
-			array('INSTALLMENT_1, INSTALLMENT_2, ORDER_STATUS', 'length', 'max'=>45),
+			array('ORDER_ID, INSTALLMENT_1, INSTALLMENT_2, ORDER_STATUS', 'length', 'max'=>45),
 			array('BF_DATE, RM_DATE, AP1_DATE, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, APPROVED_DATE', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -77,12 +78,12 @@ class Order extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'bUYERIdBUYER' => array(self::BELONGS_TO, 'Buyer', 'BUYER_idBUYER'),
 			'pT' => array(self::BELONGS_TO, 'PaymentType', 'PT_ID'),
 			'bFPT' => array(self::BELONGS_TO, 'PaymentType', 'BF_PT_ID'),
-			'rOOMROOM' => array(self::BELONGS_TO, 'Room', 'ROOM_ROOM_ID'),
 			'mUSER' => array(self::BELONGS_TO, 'User2', 'M_USER_ID'),
 			'mMUSER' => array(self::BELONGS_TO, 'User2', 'MM_USER_ID'),
+			'bUYERIdBUYER' => array(self::BELONGS_TO, 'Buyer', 'BUYER_idBUYER'),
+			'rOOMROOM' => array(self::BELONGS_TO, 'Room', 'ROOM_ROOM_ID'),
 		);
 	}
 
@@ -140,7 +141,7 @@ class Order extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('ORDER_ID',$this->ORDER_ID);
+		$criteria->compare('ORDER_ID',$this->ORDER_ID,true);
 		$criteria->compare('PRICE',$this->PRICE);
 		$criteria->compare('DISCOUNT',$this->DISCOUNT);
 		$criteria->compare('DEAL_PRICE',$this->DEAL_PRICE);
@@ -183,7 +184,6 @@ class Order extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        
         public function getAllTower()
         {
             $record = Tower::model()->findAll(array('order'=>'TOWER_ID'));
@@ -210,5 +210,19 @@ class Order extends CActiveRecord
             $record = PaymentType::model()->findAll(array('order'=>'PT_ID'));
             $list = CHtml::listData($record, 'PT_ID', 'PT_NAME');
             return $list;
+        }
+        
+        public function setID()
+        {
+            $record = Order::model()->findAll();
+            if(empty($record))
+            {
+                $this->ORDER_ID = 1 . $this->id . date('Y');
+                return;
+            }
+            $last = end($record);
+            $lastid = explode('/', $last->ORDER_ID);
+            $this->ORDER_ID = $lastid+1 . $this->id . date('Y');
+            return;
         }
 }

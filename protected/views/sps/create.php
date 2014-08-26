@@ -9,6 +9,5 @@
 ?>
 <div class='g12'>
     <h1>Create Order</h1>
-    
-    <?php $this->renderPartial('_form',array('model'=>$model));?>
+    <?php $this->renderPartial('_form',array('model'=>$model,'buyer'=>$buyer));?>
 </div>

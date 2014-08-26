@@ -106,6 +106,8 @@
                 <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Buyer"),array('buyer/create')) ?></li>
                 <li class="i_user"><?php echo CHtml::link(CHtml::tag('span',array(),"Manage Buyer"),array('buyer/manage')) ?></li>
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Order"),array('sps/create')) ?></li>
+                <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Exhibition"),array('exhibition/createex')) ?></li>
+                <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Ex Detail"),array('exhibition/createexd')) ?></li>
                     <?php 
                 else: 
                     ?>

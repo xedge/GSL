@@ -39,7 +39,7 @@ $form = $this->beginWidget('CActiveForm',array('id'=>'form',
         <?php echo $form->labelEx($model,'Fax Number')?>
         <div><?php echo $form->textField($model,'FAX_NUM') ?></div>
     </section>
-    <section>
+    <!--<section>
         <div><button class="fr submit">
                 <?php
                 if($model->isNewRecord)
@@ -48,6 +48,6 @@ $form = $this->beginWidget('CActiveForm',array('id'=>'form',
                     echo 'Save'
                 ?>
             </button></div>
-    </section>
+    </section>-->
 </fieldset>
 <?php $this->endWidget();

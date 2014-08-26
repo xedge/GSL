@@ -18,6 +18,9 @@ class SpsController extends Controller{
     public function accessRules() {
         return array(
             array('allow',
+                'actions'=>array('getfloor')
+                ),
+            array('allow',
                 'roles'=>array('Marketing')
                 ),
             array('deny',
@@ -28,12 +31,17 @@ class SpsController extends Controller{
     public function actionCreate()
     {
         $model = new Order;
-        if(isset($_POST['Order']))
+        $modelBuyer = new Buyer;
+        if(isset($_POST['Order'])&&isset($_POST['Buyer']))
         {
+            $modelBuyer->attributes = $_POST['Buyer'];
             $model->attributes = $_POST['Order'];
             $model->DATE_ORDER = date("Y-m-d");
             $model->M_USER_ID = Yii::app()->user->id;
-            $model->ORDER_ID = '1233434';
+            $model->setID();
+            $modelBuyer->save();
+            $record = Buyer::model()->findByAttributes(array('NO_ID'=>$modelBuyer->NO_ID));
+            $model->BUYER_idBUYER = $record->idBUYER;
             if($model->save())
             {
                 $mail=new YiiMailer();
@@ -54,7 +62,7 @@ class SpsController extends Controller{
                 $this->redirect (array('detail','id'=>$model));
             }
         }
-        $this->render('create',array('model'=>$model));
+        $this->render('create',array('model'=>$model,'buyer'=>$modelBuyer));
     }
     
     public function actionIndex()
@@ -68,5 +76,25 @@ class SpsController extends Controller{
     {
         $model = Order::model()->findByPk($id);
         $this->render('detail',array('model'=>$model));
+    }
+    
+    public function actionGetfloor($towerId)
+    {
+        header('Content-type: application/json');
+        
+        $floor = Floor::model()->findAllByAttributes(array('TOWER_ID'=>$towerId));
+        echo CJSON::encode($floor);
+        
+        Yii::app()->end();
+    }
+    
+    public function actionGetroom($floorid)
+    {
+        header('Content-type: application/json');
+        $rooms = Room::model()->findAllByAttributes(array('FLOOR_ID'=>$floorid),
+                'STATUS="Available"');
+        echo CJSON::encode($rooms);
+        
+        Yii::app()->end();
     }
 }
