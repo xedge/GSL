@@ -109,6 +109,9 @@
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Exhibition"),array('exhibition/createex')) ?></li>
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Ex Detail"),array('exhibition/createexd')) ?></li>
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Create Customer"),array('exhibition/createcustomer')) ?></li>
+                <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"View Order"),array('sps/viewpayment')) ?></li>
+                <?php elseif(Yii::app()->user->roles=='Admin'): ?>
+                <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"View Order"),array('sps/viewpayment')) ?></li>
                     <?php 
                 else: 
                     ?>

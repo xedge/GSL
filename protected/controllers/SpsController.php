@@ -21,6 +21,14 @@ class SpsController extends Controller{
                 'actions'=>array('getfloor')
                 ),
             array('allow',
+                'actions'=>array('viewpayment,payment'),
+                'roles'=>array('Admin')
+                ),
+            array('deny',
+                'actions'=>array('payment'),
+                'roles'=>array('Marketing')
+                ),
+            array('allow',
                 'roles'=>array('Marketing')
                 ),
             array('deny',
@@ -96,5 +104,25 @@ class SpsController extends Controller{
         echo CJSON::encode($rooms);
         
         Yii::app()->end();
+    }
+    
+    public function actionViewPayment()
+    {
+        $model = Order::model()->findAll(array('order'=>'DATE_ORDER desc'));
+        $this->render('viewAll',array('model'=>$model));
+    }
+    
+    public function actionPayment($orderId)
+    {
+        $model = Order::model()->findByPk($orderId);
+        if(isset($_POST['Order']))
+        {
+            $model->attributes = $_POST['Order'];
+            if($model->save())
+            {
+                $this->redirect(array('viewpayment'));
+            }
+        }
+        $this->render('payment',array('model'=>$model));
     }
 }

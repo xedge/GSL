@@ -26,6 +26,10 @@
             {
                     $this->redirect(array('buyer/index'));
             }
+            else if(Yii::app()->user->roles=='Admin')
+            {
+                $this->redirect(array('sps/viewpayment'));
+            }
                     
         }
         public function actionLogin()
