@@ -17,6 +17,8 @@
  * @property double $ADVANCE_PAYMENT_1
  * @property string $AP1_DATE
  * @property double $ADVANCE_PAYMENT
+ * @property string $AP_DATE_BEGIN
+ * @property string $AP_DATE_END
  * @property double $PT_PERCENT
  * @property string $INSTALLMENT_1
  * @property string $INSTALLMENT_2
@@ -33,17 +35,16 @@
  * @property integer $ROOM_ROOM_ID
  *
  * The followings are the available model relations:
+ * @property Buyer $bUYERIdBUYER
  * @property PaymentType $pT
  * @property PaymentType $bFPT
+ * @property Room $rOOMROOM
  * @property User2 $mUSER
  * @property User2 $mMUSER
- * @property Buyer $bUYERIdBUYER
- * @property Room $rOOMROOM
  */
 class Order extends CActiveRecord
 {
-    private $id = '/SPS/PTPP-GSL/';
-    /**
+	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -63,10 +64,10 @@ class Order extends CActiveRecord
 			array('PT_ID, BF_PT_ID, M_USER_ID, MM_USER_ID, BUYER_idBUYER, ROOM_ROOM_ID', 'numerical', 'integerOnly'=>true),
 			array('PRICE, DISCOUNT, DEAL_PRICE, BOOKING_FEE, REMAINING_BF, ADVANCE_PAYMENT_1, ADVANCE_PAYMENT, PT_PERCENT, INSTALLMENT_PRICE', 'numerical'),
 			array('ORDER_ID, INSTALLMENT_1, INSTALLMENT_2, ORDER_STATUS', 'length', 'max'=>45),
-			array('BF_DATE, RM_DATE, AP1_DATE, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, APPROVED_DATE', 'safe'),
+			array('BF_DATE, RM_DATE, AP1_DATE, AP_DATE_BEGIN, AP_DATE_END, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, APPROVED_DATE', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ORDER_ID, PRICE, DISCOUNT, DEAL_PRICE, PT_ID, BOOKING_FEE, BF_PT_ID, BF_DATE, REMAINING_BF, RM_DATE, ADVANCE_PAYMENT_1, AP1_DATE, ADVANCE_PAYMENT, PT_PERCENT, INSTALLMENT_1, INSTALLMENT_2, INSTALLMENT_PRICE, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, M_USER_ID, MM_USER_ID, ORDER_STATUS, APPROVED_DATE, BUYER_idBUYER, ROOM_ROOM_ID', 'safe', 'on'=>'search'),
+			array('ORDER_ID, PRICE, DISCOUNT, DEAL_PRICE, PT_ID, BOOKING_FEE, BF_PT_ID, BF_DATE, REMAINING_BF, RM_DATE, ADVANCE_PAYMENT_1, AP1_DATE, ADVANCE_PAYMENT, AP_DATE_BEGIN, AP_DATE_END, PT_PERCENT, INSTALLMENT_1, INSTALLMENT_2, INSTALLMENT_PRICE, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, M_USER_ID, MM_USER_ID, ORDER_STATUS, APPROVED_DATE, BUYER_idBUYER, ROOM_ROOM_ID', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,12 +79,12 @@ class Order extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'bUYERIdBUYER' => array(self::BELONGS_TO, 'Buyer', 'BUYER_idBUYER'),
 			'pT' => array(self::BELONGS_TO, 'PaymentType', 'PT_ID'),
 			'bFPT' => array(self::BELONGS_TO, 'PaymentType', 'BF_PT_ID'),
+			'rOOMROOM' => array(self::BELONGS_TO, 'Room', 'ROOM_ROOM_ID'),
 			'mUSER' => array(self::BELONGS_TO, 'User2', 'M_USER_ID'),
 			'mMUSER' => array(self::BELONGS_TO, 'User2', 'MM_USER_ID'),
-			'bUYERIdBUYER' => array(self::BELONGS_TO, 'Buyer', 'BUYER_idBUYER'),
-			'rOOMROOM' => array(self::BELONGS_TO, 'Room', 'ROOM_ROOM_ID'),
 		);
 	}
 
@@ -106,6 +107,8 @@ class Order extends CActiveRecord
 			'ADVANCE_PAYMENT_1' => 'Advance Payment 1',
 			'AP1_DATE' => 'Ap1 Date',
 			'ADVANCE_PAYMENT' => 'Advance Payment',
+			'AP_DATE_BEGIN' => 'Ap Date Begin',
+			'AP_DATE_END' => 'Ap Date End',
 			'PT_PERCENT' => 'Pt Percent',
 			'INSTALLMENT_1' => 'Installment 1',
 			'INSTALLMENT_2' => 'Installment 2',
@@ -154,6 +157,8 @@ class Order extends CActiveRecord
 		$criteria->compare('ADVANCE_PAYMENT_1',$this->ADVANCE_PAYMENT_1);
 		$criteria->compare('AP1_DATE',$this->AP1_DATE,true);
 		$criteria->compare('ADVANCE_PAYMENT',$this->ADVANCE_PAYMENT);
+		$criteria->compare('AP_DATE_BEGIN',$this->AP_DATE_BEGIN,true);
+		$criteria->compare('AP_DATE_END',$this->AP_DATE_END,true);
 		$criteria->compare('PT_PERCENT',$this->PT_PERCENT);
 		$criteria->compare('INSTALLMENT_1',$this->INSTALLMENT_1,true);
 		$criteria->compare('INSTALLMENT_2',$this->INSTALLMENT_2,true);
@@ -184,7 +189,7 @@ class Order extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-        public function getAllTower()
+         public function getAllTower()
         {
             $record = Tower::model()->findAll(array('order'=>'TOWER_ID'));
             $list = CHtml::listData($record, 'TOWER_ID', 'TOWER_NAME');
@@ -224,5 +229,42 @@ class Order extends CActiveRecord
             $lastid = explode('/', $last->ORDER_ID);
             $this->ORDER_ID = $lastid+1 . $this->id . date('Y');
             return;
+        }
+        
+        public function notifyNewOrder()
+        {
+            $mail=new YiiMailer();
+                $mail->setFrom('dummypengguna@gmail.com','Dummy Dum');
+                $criteria = new CDbCriteria;
+                $criteria->select ='EMAIL_ADDRESS';
+                $criteria->compare('UT_ID', '1',FALSE,'OR');
+                $criteria->compare('UT_ID', '2',FALSE,'OR');
+                $criteria->compare('UT_ID', '3',FALSE,'OR');
+                $record = User2::model()->findAll($criteria);
+                foreach ($record as $email)
+                {
+                    $mail->setTo($email->EMAIL_ADDRESS);
+                    $mail->setSubject('New Order');
+                    $mail->setBody('Simple message');
+                    $mail->send();
+                }
+        }
+        
+        public function notifyApproval()
+        {
+            $mail=new YiiMailer();
+            $mail->setFrom('dummypengguna@gmail.com','Dummy Dum');
+            $criteria = new CDbCriteria;
+            $criteria->select ='EMAIL_ADDRESS';
+            $criteria->compare('UT_ID', '1',FALSE,'OR');
+            $criteria->compare('UT_ID', '3',FALSE,'OR');
+            $record = User2::model()->findAll($criteria);
+            foreach ($record as $email)
+            {
+                $mail->setTo($email->EMAIL_ADDRESS);
+                $mail->setSubject('New Order');
+                $mail->setBody('Simple message');
+                $mail->send();
+            }
         }
 }

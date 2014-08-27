@@ -52,22 +52,8 @@ class SpsController extends Controller{
             $model->BUYER_idBUYER = $record->idBUYER;
             if($model->save())
             {
-                $mail=new YiiMailer();
-                $mail->setFrom('dummypengguna@gmail.com','Dummy Dum');
-                $criteria = new CDbCriteria;
-                $criteria->select ='EMAIL_ADDRESS';
-                $criteria->compare('UT_ID', '1',FALSE,'OR');
-                $criteria->compare('UT_ID', '2',FALSE,'OR');
-                $criteria->compare('UT_ID', '3',FALSE,'OR');
-                $record = User2::model()->findAll($criteria);
-                foreach ($record as $email)
-                {
-                    $mail->setTo($email->EMAIL_ADDRESS);
-                    $mail->setSubject('New Order');
-                    $mail->setBody('Simple message');
-                    $mail->send();
-                }
-                $this->redirect (array('detail','id'=>$model));
+                
+                $this->redirect (array(ViewPayment));
             }
         }
         $this->render('create',array('model'=>$model,'buyer'=>$modelBuyer));
@@ -125,4 +111,5 @@ class SpsController extends Controller{
         }
         $this->render('payment',array('model'=>$model));
     }
+    
 }

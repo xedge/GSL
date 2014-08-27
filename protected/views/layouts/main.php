@@ -112,6 +112,7 @@
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"View Order"),array('sps/viewpayment')) ?></li>
                 <?php elseif(Yii::app()->user->roles=='Admin'): ?>
                 <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"View Order"),array('sps/viewpayment')) ?></li>
+                <li class="i_create_write"><?php echo CHtml::link(CHtml::tag('span',array(),"Send Notification"),array('blastemail/index')) ?></li>
                     <?php 
                 else: 
                     ?>

@@ -36,6 +36,7 @@ $priceppn = $priceafterdisc * 110 / 100;
       var perc = $('#DPC').val();
       var totalCost = $('#AP').val();
       var totalDP = perc * totalCost / 100 ;
+      $('#DP').val(totalDP);
       var DPCost = totalDP/times;
       $('#Order_ADVANCE_PAYMENT_1').val(DPCost-$('#Order_BOOKING_FEE').val());
       $('#Order_ADVANCE_PAYMENT').val(DPCost);
@@ -58,6 +59,18 @@ $priceppn = $priceafterdisc * 110 / 100;
         <?php echo $form->labelEx($model,'Room Num')?>
         <div><?php echo CHtml::textField('Order[]', $model->rOOMROOM->ROOM_NUMBER, array('readonly'=>true))?></div>
         <?php echo CHtml::hiddenField('Order[ROOM_ROOM_ID]',$model->ROOM_ROOM_ID,array('display'=>'none'))?>
+    </section>
+    <section>
+        <?php echo $form->labelEx($model,'Room Area (Gross)')?>
+        <div>
+            <?php echo CHtml::textField('Order[asd]',$model->rOOMROOM->ROOM_AREA_GROSS,  array('readonly'=>true))?>
+        </div>
+    </section>
+    <section>
+        <?php echo $form->labelEx($model, 'Room Area (Nett)')?>
+        <div>
+            <?php echo CHtml::textField('Order[Area]',$model->rOOMROOM->ROOM_AREA_NETT)?>
+        </div>
     </section>
     <section>
         <?php echo $form->labelEx($model,'Price')?>
@@ -119,7 +132,8 @@ $priceppn = $priceafterdisc * 110 / 100;
     <section>
         <?php echo $form->labelEx($model,'Down Payment Cost %') ?>
         <div>
-            <?php echo CHtml::textField('DPC')?>
+            <?php echo CHtml::textField('DPC','',array('class'=>'g1'))?>
+            <?php echo CHtml::textField('DP','',array('class'=>'g2','readonly'=>true))?>
         </div>
     </section>
     <section>
@@ -157,6 +171,18 @@ $priceppn = $priceafterdisc * 110 / 100;
         <?php endif?>
         </div>
        
+    </section>
+</fieldset>
+<fieldset>
+    <section>
+        <div><button class="fr submit">
+                <?php
+                if($model->isNewRecord)
+                    echo 'Create';
+                else
+                    echo 'Save'
+                ?>
+            </button></div>
     </section>
 </fieldset>
 <?php $this->endWidget();
