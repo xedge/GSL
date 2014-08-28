@@ -52,8 +52,7 @@ class SpsController extends Controller{
             $model->BUYER_idBUYER = $record->idBUYER;
             if($model->save())
             {
-                
-                $this->redirect (array(ViewPayment));
+                $this->redirect (array('ViewPayment'));
             }
         }
         $this->render('create',array('model'=>$model,'buyer'=>$modelBuyer));
@@ -66,11 +65,6 @@ class SpsController extends Controller{
     }
 
 
-    public function actionDetail($id)
-    {
-        $model = Order::model()->findByPk($id);
-        $this->render('detail',array('model'=>$model));
-    }
     
     public function actionGetfloor($towerId)
     {
@@ -111,5 +105,24 @@ class SpsController extends Controller{
         }
         $this->render('payment',array('model'=>$model));
     }
+    public function actionDetail($orderId)
+    {
+        $model = Order::model()->findByPk($orderId);
+        $this->render('detail',array('model'=>$model));
+    }
     
+    public function actionApprove($orderId)
+    {
+        $model = Order::model()->findByPk($orderId);
+        $model->approve();
+        $model->notifyApproval();
+        $this->redirect(array('viewpayment'));
+    }
+    
+    public function actionCancel($orderId)
+    {
+        $model = Order::model()->findByPk($orderId);
+        $model->cancel();
+        $this->redirect(array('viewpayment'));
+    }
 }

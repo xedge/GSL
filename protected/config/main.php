@@ -59,10 +59,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=mydb',
+			'connectionString' => 'mysql:host=floostudio.com;dbname=k8161900_gsl',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'k8161900_yanuar',
+			'password' => 'yanuar',
 			'charset' => 'utf8',
 		),
 		

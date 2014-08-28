@@ -7,22 +7,24 @@
  * @property string $ORDER_ID
  * @property double $PRICE
  * @property double $DISCOUNT
- * @property double $DEAL_PRICE
  * @property integer $PT_ID
  * @property double $BOOKING_FEE
  * @property integer $BF_PT_ID
+ * @property string $BF_CHECK_BANK
+ * @property string $BF_CHECK_NO
+ * @property string $BF_CC_NO
  * @property string $BF_DATE
- * @property double $REMAINING_BF
- * @property string $RM_DATE
+ * @property double $ADVANCE_PAYMENT_FEE
+ * @property integer $ADVANCE_PAYMENT_TIMES
  * @property double $ADVANCE_PAYMENT_1
  * @property string $AP1_DATE
  * @property double $ADVANCE_PAYMENT
  * @property string $AP_DATE_BEGIN
  * @property string $AP_DATE_END
- * @property double $PT_PERCENT
- * @property string $INSTALLMENT_1
- * @property string $INSTALLMENT_2
- * @property double $INSTALLMENT_PRICE
+ * @property integer $RM_PT_ID
+ * @property double $RM_PERCENT
+ * @property integer $RM_INSTALLMENT_TIMES
+ * @property double $RM_COST
  * @property string $RM_PAYMENT_DATE
  * @property string $RM_INSTALLMENT_DATE_BEGIN
  * @property string $RM_INSTALLMENT_DATE_ENG
@@ -35,6 +37,7 @@
  * @property integer $ROOM_ROOM_ID
  *
  * The followings are the available model relations:
+ * @property PaymentType $rMPT
  * @property Buyer $bUYERIdBUYER
  * @property PaymentType $pT
  * @property PaymentType $bFPT
@@ -44,7 +47,15 @@
  */
 class Order extends CActiveRecord
 {
-	/**
+    private $tunai = '1';
+    private $tunaibertahap = '2';
+    private $angsuran = '3';
+    private $kpa = '4';
+    private $cek = '5';
+    private $creadit = '6';
+    private $bank = '7';
+    private $id = '/SPS/PTPP-GSL/';
+    /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -61,13 +72,13 @@ class Order extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('ORDER_ID, PT_ID, BF_PT_ID, M_USER_ID, BUYER_idBUYER, ROOM_ROOM_ID', 'required'),
-			array('PT_ID, BF_PT_ID, M_USER_ID, MM_USER_ID, BUYER_idBUYER, ROOM_ROOM_ID', 'numerical', 'integerOnly'=>true),
-			array('PRICE, DISCOUNT, DEAL_PRICE, BOOKING_FEE, REMAINING_BF, ADVANCE_PAYMENT_1, ADVANCE_PAYMENT, PT_PERCENT, INSTALLMENT_PRICE', 'numerical'),
-			array('ORDER_ID, INSTALLMENT_1, INSTALLMENT_2, ORDER_STATUS', 'length', 'max'=>45),
-			array('BF_DATE, RM_DATE, AP1_DATE, AP_DATE_BEGIN, AP_DATE_END, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, APPROVED_DATE', 'safe'),
+			array('PT_ID, BF_PT_ID, ADVANCE_PAYMENT_TIMES, RM_PT_ID, RM_INSTALLMENT_TIMES, M_USER_ID, MM_USER_ID, BUYER_idBUYER, ROOM_ROOM_ID', 'numerical', 'integerOnly'=>true),
+			array('PRICE, DISCOUNT, BOOKING_FEE, ADVANCE_PAYMENT_FEE, ADVANCE_PAYMENT_1, ADVANCE_PAYMENT, RM_PERCENT, RM_COST', 'numerical'),
+			array('ORDER_ID, BF_CHECK_BANK, BF_CHECK_NO, BF_CC_NO, ORDER_STATUS', 'length', 'max'=>45),
+			array('BF_DATE, AP1_DATE, AP_DATE_BEGIN, AP_DATE_END, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, APPROVED_DATE', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('ORDER_ID, PRICE, DISCOUNT, DEAL_PRICE, PT_ID, BOOKING_FEE, BF_PT_ID, BF_DATE, REMAINING_BF, RM_DATE, ADVANCE_PAYMENT_1, AP1_DATE, ADVANCE_PAYMENT, AP_DATE_BEGIN, AP_DATE_END, PT_PERCENT, INSTALLMENT_1, INSTALLMENT_2, INSTALLMENT_PRICE, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, M_USER_ID, MM_USER_ID, ORDER_STATUS, APPROVED_DATE, BUYER_idBUYER, ROOM_ROOM_ID', 'safe', 'on'=>'search'),
+			array('ORDER_ID, PRICE, DISCOUNT, PT_ID, BOOKING_FEE, BF_PT_ID, BF_CHECK_BANK, BF_CHECK_NO, BF_CC_NO, BF_DATE, ADVANCE_PAYMENT_FEE, ADVANCE_PAYMENT_TIMES, ADVANCE_PAYMENT_1, AP1_DATE, ADVANCE_PAYMENT, AP_DATE_BEGIN, AP_DATE_END, RM_PT_ID, RM_PERCENT, RM_INSTALLMENT_TIMES, RM_COST, RM_PAYMENT_DATE, RM_INSTALLMENT_DATE_BEGIN, RM_INSTALLMENT_DATE_ENG, DATE_ORDER, M_USER_ID, MM_USER_ID, ORDER_STATUS, APPROVED_DATE, BUYER_idBUYER, ROOM_ROOM_ID', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,6 +90,7 @@ class Order extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                        'rMPT' => array(self::BELONGS_TO, 'PaymentType', 'RM_PT_ID'),
 			'bUYERIdBUYER' => array(self::BELONGS_TO, 'Buyer', 'BUYER_idBUYER'),
 			'pT' => array(self::BELONGS_TO, 'PaymentType', 'PT_ID'),
 			'bFPT' => array(self::BELONGS_TO, 'PaymentType', 'BF_PT_ID'),
@@ -97,22 +109,24 @@ class Order extends CActiveRecord
 			'ORDER_ID' => 'Order',
 			'PRICE' => 'Price',
 			'DISCOUNT' => 'Discount',
-			'DEAL_PRICE' => 'Deal Price',
 			'PT_ID' => 'Pt',
 			'BOOKING_FEE' => 'Booking Fee',
 			'BF_PT_ID' => 'Bf Pt',
+			'BF_CHECK_BANK' => 'Bf Check Bank',
+			'BF_CHECK_NO' => 'Bf Check No',
+			'BF_CC_NO' => 'Bf Cc No',
 			'BF_DATE' => 'Bf Date',
-			'REMAINING_BF' => 'Remaining Bf',
-			'RM_DATE' => 'Rm Date',
+			'ADVANCE_PAYMENT_FEE' => 'Advance Payment Fee',
+			'ADVANCE_PAYMENT_TIMES' => 'Advance Payment Times',
 			'ADVANCE_PAYMENT_1' => 'Advance Payment 1',
 			'AP1_DATE' => 'Ap1 Date',
 			'ADVANCE_PAYMENT' => 'Advance Payment',
 			'AP_DATE_BEGIN' => 'Ap Date Begin',
 			'AP_DATE_END' => 'Ap Date End',
-			'PT_PERCENT' => 'Pt Percent',
-			'INSTALLMENT_1' => 'Installment 1',
-			'INSTALLMENT_2' => 'Installment 2',
-			'INSTALLMENT_PRICE' => 'Installment Price',
+			'RM_PT_ID' => 'Rm Pt',
+			'RM_PERCENT' => 'Rm Percent',
+			'RM_INSTALLMENT_TIMES' => 'Rm Installment Times',
+			'RM_COST' => 'Rm Cost',
 			'RM_PAYMENT_DATE' => 'Rm Payment Date',
 			'RM_INSTALLMENT_DATE_BEGIN' => 'Rm Installment Date Begin',
 			'RM_INSTALLMENT_DATE_ENG' => 'Rm Installment Date Eng',
@@ -147,22 +161,24 @@ class Order extends CActiveRecord
 		$criteria->compare('ORDER_ID',$this->ORDER_ID,true);
 		$criteria->compare('PRICE',$this->PRICE);
 		$criteria->compare('DISCOUNT',$this->DISCOUNT);
-		$criteria->compare('DEAL_PRICE',$this->DEAL_PRICE);
 		$criteria->compare('PT_ID',$this->PT_ID);
 		$criteria->compare('BOOKING_FEE',$this->BOOKING_FEE);
 		$criteria->compare('BF_PT_ID',$this->BF_PT_ID);
+		$criteria->compare('BF_CHECK_BANK',$this->BF_CHECK_BANK,true);
+		$criteria->compare('BF_CHECK_NO',$this->BF_CHECK_NO,true);
+		$criteria->compare('BF_CC_NO',$this->BF_CC_NO,true);
 		$criteria->compare('BF_DATE',$this->BF_DATE,true);
-		$criteria->compare('REMAINING_BF',$this->REMAINING_BF);
-		$criteria->compare('RM_DATE',$this->RM_DATE,true);
+		$criteria->compare('ADVANCE_PAYMENT_FEE',$this->ADVANCE_PAYMENT_FEE);
+		$criteria->compare('ADVANCE_PAYMENT_TIMES',$this->ADVANCE_PAYMENT_TIMES);
 		$criteria->compare('ADVANCE_PAYMENT_1',$this->ADVANCE_PAYMENT_1);
 		$criteria->compare('AP1_DATE',$this->AP1_DATE,true);
 		$criteria->compare('ADVANCE_PAYMENT',$this->ADVANCE_PAYMENT);
 		$criteria->compare('AP_DATE_BEGIN',$this->AP_DATE_BEGIN,true);
 		$criteria->compare('AP_DATE_END',$this->AP_DATE_END,true);
-		$criteria->compare('PT_PERCENT',$this->PT_PERCENT);
-		$criteria->compare('INSTALLMENT_1',$this->INSTALLMENT_1,true);
-		$criteria->compare('INSTALLMENT_2',$this->INSTALLMENT_2,true);
-		$criteria->compare('INSTALLMENT_PRICE',$this->INSTALLMENT_PRICE);
+		$criteria->compare('RM_PT_ID',$this->RM_PT_ID);
+		$criteria->compare('RM_PERCENT',$this->RM_PERCENT);
+		$criteria->compare('RM_INSTALLMENT_TIMES',$this->RM_INSTALLMENT_TIMES);
+		$criteria->compare('RM_COST',$this->RM_COST);
 		$criteria->compare('RM_PAYMENT_DATE',$this->RM_PAYMENT_DATE,true);
 		$criteria->compare('RM_INSTALLMENT_DATE_BEGIN',$this->RM_INSTALLMENT_DATE_BEGIN,true);
 		$criteria->compare('RM_INSTALLMENT_DATE_ENG',$this->RM_INSTALLMENT_DATE_ENG,true);
@@ -217,6 +233,40 @@ class Order extends CActiveRecord
             return $list;
         }
         
+        public function getPayment()
+        {
+            $criteria = new CDbCriteria;
+            $criteria->compare('PT_ID', $this->tunai,FALSE,'OR');
+            $criteria->compare('PT_ID', $this->angsuran,FALSE,'OR');
+            $criteria->compare('PT_ID', $this->kpa,FALSE,'OR');
+            $record = PaymentType::model()->findAll($criteria);
+            $list = CHtml::listData($record, 'PT_ID', 'PT_NAME');
+            return $list;
+        }
+        
+        public function getBFPayment()
+        {
+            $criteria = new CDbCriteria;
+            $criteria->compare('PT_ID', $this->tunai,FALSE,'OR');
+            $criteria->compare('PT_ID', $this->cek,FALSE,'OR');
+            $criteria->compare('PT_ID', $this->creadit,FALSE,'OR');
+            $record = PaymentType::model()->findAll($criteria);
+            $list = CHtml::listData($record, 'PT_ID', 'PT_NAME');
+            return $list;
+        }
+        
+        public  function getRMPayment()
+        {
+            $criteria = new CDbCriteria;
+            $criteria->compare('PT_ID', $this->tunai,FALSE,'OR');
+            $criteria->compare('PT_ID', $this->bank,FALSE,'OR');
+            $criteria->compare('PT_ID', $this->angsuran,FALSE,'OR');
+            $record = PaymentType::model()->findAll($criteria);
+            $list = CHtml::listData($record, 'PT_ID', 'PT_NAME');
+            return $list;
+        }
+
+
         public function setID()
         {
             $record = Order::model()->findAll();
@@ -227,7 +277,7 @@ class Order extends CActiveRecord
             }
             $last = end($record);
             $lastid = explode('/', $last->ORDER_ID);
-            $this->ORDER_ID = $lastid+1 . $this->id . date('Y');
+            $this->ORDER_ID = $lastid[0]+1 . $this->id . date('Y');
             return;
         }
         
@@ -267,4 +317,21 @@ class Order extends CActiveRecord
                 $mail->send();
             }
         }
+        
+        public function approve()
+        {
+            $this->ORDER_STATUS = 'Approved';
+            $this->MM_USER_ID = Yii::app()->user->id;
+            $this->APPROVED_DATE = date("Y-m-d");
+            $this->save();
+        }
+        
+        public function cancel()
+        {
+            $this->ORDER_STATUS = NULL;
+            $this->MM_USER_ID = NULL;
+            $this->APPROVED_DATE = NULL;
+            $this->save();
+        }
+        
 }

@@ -8,15 +8,16 @@
 $form = $this->beginWidget('CActiveForm',array('id' => 'form',
         'enableAjaxValidation'=>false));
 $priceafterdisc = $model->PRICE - $model->DISCOUNT;
-$priceppn = $priceafterdisc * 110 / 100;
 ?>
 <script type="text/javascript">
     $(function(){
-        $('#Order_AP1_DATE, #Order_AP_DATE_BEGIN, #Order_AP_DATE_END, #Order_RM_PAYMENT_DATE,').wl_Date();
-        $('#Order_AP1_DATE, #Order_AP_DATE_BEGIN, #Order_AP_DATE_END, #Order_RM_PAYMENT_DATE,').wl_Date(
+        $('.date').wl_Date();
+        $('.date').wl_Date(
                 "option","dateFormat",
                 "yy-mm-dd"
                 );
+        $('.Ang').hide();
+        $('#Order_RM_COST').prop('readonly',true);
         $('#DPC').on("input",function(){
             setDownPayment();
         });
@@ -25,18 +26,45 @@ $priceppn = $priceafterdisc * 110 / 100;
         })
         $('#PTC').on("input",function(){
             var perc = $(this).val();
-            var totalCost = $('#AP').val();
+            var totalCost = $('#AD').val();
             var remain = perc *totalCost / 100;
             $('#Order_INSTALLMENT_PRICE').val(remain);
+        });
+        $('#Order_RM_PERCENT').on("input",function(){
+            var perc = $(this).val();
+            var totalCost = $('#AD').val();
+            var payment = perc * totalCost /100;
+            $('#Order_RM_COST').val(payment);
+        })
+        $("#Order_RM_INSTALLMENT_TIMES").on("input",function(){
+            var times = $(this).val();
+            var totalCost = $('#AD').val();
+             $('#Order_RM_COST').val(totalCost/times);
+        })
+        $('#Order_RM_PT_ID').change(function(){
+            var type = $(this).val();
+            if(type=='3')
+            {
+                $('.Ang').show();
+                $('#Order_RM_PAYMENT_DATE, #Rmdate').hide();
+                $('.notAng').hide();
+                $('#Order_RM_COST').val('');
+            }
+            else
+            {
+                $('.Ang').hide();
+                $('#Order_RM_PAYMENT_DATE, #Rmdate').show();
+                 $('.notAng').show();
+            }
         })
     });
     function setDownPayment()
     {
-      var times = $('#DPT').val();
+      var times = $('#Order_ADVANCE_PAYMENT_TIMES').val();
       var perc = $('#DPC').val();
-      var totalCost = $('#AP').val();
+      var totalCost = $('#AD').val();
       var totalDP = perc * totalCost / 100 ;
-      $('#DP').val(totalDP);
+      $('#Order_ADVANCE_PAYMENT_FEE').val(totalDP);
       var DPCost = totalDP/times;
       $('#Order_ADVANCE_PAYMENT_1').val(DPCost-$('#Order_BOOKING_FEE').val());
       $('#Order_ADVANCE_PAYMENT').val(DPCost);
@@ -90,12 +118,6 @@ $priceppn = $priceafterdisc * 110 / 100;
             <?php echo CHtml::textField('AD',$priceafterdisc,array('readonly'=>true))?>
         </div>
     </section>
-    <section>
-        <?php echo $form->labelEx($model, 'Price after Tax') ?>
-        <div>
-            <?php echo CHtml::textField('AP',$priceppn,array('readonly'=>true))?>
-        </div>
-    </section>
     
 </fieldset>
 <fieldset>
@@ -116,10 +138,10 @@ $priceppn = $priceafterdisc * 110 / 100;
     <section>
         <?php echo $form->labelEx($model,'Booking Payment') ?>
         <div>
-            <?php echo CHtml::textField('BF_PT_ID', $model->bFPT->PT_NAME, array('readonly'=>true,'class'=>'g1')) ?>
+            <?php echo CHtml::textField('BF_PT_ID', $model->bFPT->PT_NAME, array('readonly'=>true,'class'=>'g2')) ?>
             <?php echo CHtml::hiddenField('Order[BF_PT_ID]', $model->BF_PT_ID) ?>
-            <?php echo $form->labelEx($model,'date') ?>
-            <?php echo $form->textField($model,'BF_DATE',array('id'=>'date','class'=>'date'))?>
+            <?php echo $form->labelEx($model,'date',array('class'=>'g1')) ?>
+            <?php echo $form->textField($model,'BF_DATE',array('readonly'=>TRUE,'class'=>'g2'))?>
         </div>
     </section>
 </fieldset>
@@ -127,13 +149,13 @@ $priceppn = $priceafterdisc * 110 / 100;
     <label>Down Payment</label>
     <section>
         <?php echo $form->labelEx($model,'Down Payment Times')?>
-        <div><?php echo CHtml::textField('DPT')?></div>
+        <div><?php echo CHtml::textField('Order[ADVANCE_PAYMENT_TIMES]')?></div>
     </section>
     <section>
         <?php echo $form->labelEx($model,'Down Payment Cost %') ?>
         <div>
             <?php echo CHtml::textField('DPC','',array('class'=>'g1'))?>
-            <?php echo CHtml::textField('DP','',array('class'=>'g2','readonly'=>true))?>
+            <?php echo CHtml::textField('Order[ADVANCE_PAYMENT_FEE]','',array('class'=>'g2','readonly'=>true))?>
         </div>
     </section>
     <section>
@@ -158,19 +180,28 @@ $priceppn = $priceafterdisc * 110 / 100;
 <fieldset>
     <label>Rest of Payment</label>
     <section>
-        <?php echo $form->labelEx($model,$model->pT->PT_NAME.' %')?>
+       <?php echo $form->labelEx($model,'Payment Type')?>
         <div>
-            <?php if($model->PT_ID==1||$model->PT_ID==4):
-           echo CHtml::textField('PTC','',array('class'=>'g1'));
-            echo $form->labelEx($model,'Total');
-           echo CHtml::textField('Order[INSTALLMENT_PRICE]',$model->INSTALLMENT_PRICE,array('readonly'=>true,'class'=>'g2'));
-           echo CHtml::label('Date', 'dateRM');
-           echo CHtml::textField('Order[RM_PAYMENT_DATE]',$model->RM_PAYMENT_DATE,array('class'=>'date'))
-           ?>
-        
-        <?php endif?>
+            <?php echo CHtml::dropDownList('Order[RM_PT_ID]', '', $model->getRMPayment(),array('class'=>'g2'))?>
+            <?php echo CHtml::textField('Order[RM_PERCENT]','',array('class'=>'g1 notAng'));
+                echo CHtml::label('%','lbl',array('class'=>'g1 notAng') ); 
+                echo $form->labelEx($model,'Payment times',array('class'=>'g2 Ang'));
+            echo $form->textField($model,'RM_INSTALLMENT_TIMES',array('class'=>'g5 Ang'));
+                ?>
         </div>
-       
+    </section>
+    <section>
+        <?php echo $form->labelEx($model,'Remaining Payment')?>
+        <div>
+            <?php echo $form->textField($model,'RM_COST',array('class'=>'g3'))?>
+            <?php echo CHtml::label('Date', 'Rmdate',array('class'=>'g1'));
+            echo CHtml::textField('Order[RM_PAYMENT_DATE]', '',array('class'=>'date'));
+            echo CHtml::label('Date Begin', 'Rmdate1',array('class'=>'g1 Ang'));
+            echo CHtml::textField('Order[RM_INSTALLMENT_DATE_BEGIN]','',array('class'=>'date Ang g3'));
+            echo CHtml::label('Date End', 'Rmdate2',array('class'=>'g1 Ang'));
+            echo CHtml::textField('Order[RM_INSTALLMENT_DATE_END]','',array('class'=>'date Ang g3'));
+                    ?>
+        </div>
     </section>
 </fieldset>
 <fieldset>
