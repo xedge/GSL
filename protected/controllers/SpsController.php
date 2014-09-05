@@ -22,7 +22,7 @@ class SpsController extends Controller{
                 ),
             array('allow',
                 'actions'=>array('viewpayment,payment'),
-                'roles'=>array('Admin')
+                'roles'=>array('*')
                 ),
             array('deny',
                 'actions'=>array('payment'),
@@ -44,15 +44,21 @@ class SpsController extends Controller{
         {
             $modelBuyer->attributes = $_POST['Buyer'];
             $model->attributes = $_POST['Order'];
-            $model->DATE_ORDER = date("Y-m-d");
+            $model->DATE_ORDER = date("Y-m-d H:i:s");
             $model->M_USER_ID = Yii::app()->user->id;
             $model->setID();
             $modelBuyer->save();
             $record = Buyer::model()->findByAttributes(array('NO_ID'=>$modelBuyer->NO_ID));
             $model->BUYER_idBUYER = $record->idBUYER;
+            $model->BF_DATE = date("Y-m-d", strtotime($model->BF_DATE));
             if($model->save())
             {
+                $model->notifyNewOrder();
                 $this->redirect (array('ViewPayment'));
+            }
+            else
+            {
+                echo $model->errors[0];
             }
         }
         $this->render('create',array('model'=>$model,'buyer'=>$modelBuyer));
@@ -98,6 +104,19 @@ class SpsController extends Controller{
         if(isset($_POST['Order']))
         {
             $model->attributes = $_POST['Order'];
+            $model->AP1_DATE = date("Y-m-d", strtotime($model->AP1_DATE));
+            $model->AP_DATE_BEGIN = date("Y-m-d", strtotime($model->AP_DATE_BEGIN));
+            $model->AP_DATE_END = date("Y-m-d", strtotime($model->AP_DATE_END));
+            if($model->RM_PT_ID==3)
+            {
+                $model->RM_INSTALLMENT_DATE_BEGIN = date("Y-m-d", strtotime($model->RM_INSTALLMENT_DATE_BEGIN));
+                $model->RM_INSTALLMENT_DATE_ENG = date("Y-m-d", strtotime($model->RM_INSTALLMENT_DATE_ENG));
+            }
+            else
+            {
+                $model->RM_PAYMENT_DATE = date("Y-m-d", strtotime($model->RM_PAYMENT_DATE));
+            }
+            
             if($model->save())
             {
                 $this->redirect(array('viewpayment'));

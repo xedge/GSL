@@ -22,7 +22,7 @@
                 {
                     $this->redirect(array('user2/index'));
                 }
-            else if(Yii::app()->user->roles=='Marketing')
+            else if(Yii::app()->user->roles=='Marketing'||Yii::app()->user->roles=='Marketing Manager')
             {
                     $this->redirect(array('buyer/index'));
             }

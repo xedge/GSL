@@ -291,13 +291,15 @@ class Order extends CActiveRecord
                 $criteria->compare('UT_ID', '2',FALSE,'OR');
                 $criteria->compare('UT_ID', '3',FALSE,'OR');
                 $record = User2::model()->findAll($criteria);
+                $mailaddress = new ArrayObject;
                 foreach ($record as $email)
                 {
-                    $mail->setTo($email->EMAIL_ADDRESS);
-                    $mail->setSubject('New Order');
-                    $mail->setBody('Simple message');
-                    $mail->send();
+                    $mailaddress->append($email->EMAIL_ADDRESS);
                 }
+                $mail->setTo($mailaddress);
+                $mail->setSubject('New Order');
+                $mail->setBody('Simple message');
+                $mail->send();
         }
         
         public function notifyApproval()
@@ -309,13 +311,15 @@ class Order extends CActiveRecord
             $criteria->compare('UT_ID', '1',FALSE,'OR');
             $criteria->compare('UT_ID', '3',FALSE,'OR');
             $record = User2::model()->findAll($criteria);
+            $mailaddress = new ArrayObject;
             foreach ($record as $email)
             {
-                $mail->setTo($email->EMAIL_ADDRESS);
-                $mail->setSubject('New Order');
-                $mail->setBody('Simple message');
-                $mail->send();
+                $mailaddress->append($email->EMAIL_ADDRESS);
             }
+            $mail->setTo($mailaddress);
+            $mail->setSubject('Order Approved');
+            $mail->setBody('Simple message');
+            $mail->send();
         }
         
         public function approve()

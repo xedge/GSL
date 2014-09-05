@@ -45,3 +45,15 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+    $(function(){
+        $('#containUser').jTable({
+            title: 'Table of User',
+            paging:true,
+            pageSize:2,
+            sorting:true,
+            defaultSorting
+        });
+    })
+</script>

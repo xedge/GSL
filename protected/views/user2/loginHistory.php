@@ -8,17 +8,12 @@
 
 ?>
 <script type="text/javascript">
-    $(function(){
-        $("#tabel").dataTable({
-            paging:true
-        });
-    })
 
 </script>
 <div class="g12">
     <h1>Login History</h1>
     
-    <table id="tabel">
+    <table class="datatable">
         <thead>
             <tr>
                 <th>
@@ -34,7 +29,7 @@
         </thead>
         <tbody>
             <?php foreach ($model as $record){?>
-            <tr class="gradeA">
+            <tr>
                 <td>
                     <?php echo $record->uSERUSER->USER_NAME?>
                 </td>

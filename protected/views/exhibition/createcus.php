@@ -34,11 +34,16 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
 <fieldset>
     <section>
         <?php echo $form->labelEx($model,'Exhibition')?>
-        <div><?php echo CHtml::dropDownList('Exhibition', '', array('Event'=>$model->getAllExhibition()))?></div>
+        <div>
+            <?php echo CHtml::dropDownList('Exhibition', '', array('Event'=>$model->getAllExhibition()))?>
+            <?php echo CHtml::link('Create New',array('exhibition/createex'),array('class'=>'btn'))?>
+        </div>
     </section>
     <section>
         <?php echo $form->labelEx($model,'Exhibition Detail')?>
-        <div><?php echo CHtml::dropDownList('Customer[EXHIBITION_DETAIL_ED_ID]', '', array(''))?></div>
+        <div><?php echo CHtml::dropDownList('Customer[EXHIBITION_DETAIL_ED_ID]', '', array(''))?>
+            <?php echo CHtml::link('Create New',array('exhibition/createexd'),array('class'=>'btn'))?>
+        </div>
     </section>
     <section>
         <?php echo $form->labelEx($model,'Customer Name')?>

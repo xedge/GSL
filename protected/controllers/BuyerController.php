@@ -17,6 +17,10 @@ class BuyerController extends Controller
     public function accessRules() {
         return array(
             array('allow',
+                'actions'=>array('index'),
+                'roles'=>array('Marketing Manager')
+                ),
+            array('allow',
                 'roles'=>array('Marketing')
                 ),
             array('deny',

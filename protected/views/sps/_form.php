@@ -18,7 +18,7 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
         $("#date").wl_Date();
         $("#date").wl_Date(
                 "option","dateFormat",
-                "yy-mm-dd"
+                "dd-mm-yy"
                 );
         $("#Tower").change(function(){
             var $dropdown = $(this);
@@ -48,16 +48,19 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
         });
         $("#DSC").on("input",function(){
             var $perc = $(this).val();
-            var price = $("#Order_PRICE");
-            $("#Order_DISCOUNT").val($perc * price.val() /100);
-            $("#pad").val(price.val()- $("#Order_DISCOUNT").val());
+            var price = unformatnumber( $("#Order_PRICE").val());
+            var orderDiscount = $perc * price /100;
+            $("#Order_DISCOUNT").val('Rp '+formatNumber(orderDiscount,0,2,true));
+            var pad = price -orderDiscount;
+            $("#pad").val('Rp '+formatNumber(pad,0,2,true));
         });
         $("#Order_DISCOUNT").on("input",function(){
             var dsc = $(this).val();
-            var price = $("#Order_PRICE").val();
+            var price = unformatnumber( $("#Order_PRICE").val());
             $("#DSC").val(dsc/price*100);
-            $("#pad").val(price-dsc);
+            $("#pad").val('Rp '+formatNumber(price-dsc,0,2,true));
         })
+        
         $("#Order_BF_PT_ID").change(function(){
            var $val=$(this).val();
            if($val=='1')
@@ -76,6 +79,13 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
                $("#cek").hide();
            }
         });
+        $('input[readonly]').css("background-color","gray");
+        $('input[readonly]').css("color","white");
+        $('form').submit(function(){
+            $('.money').each(function(){
+            $(this).val(unformatnumber($(this).val()));
+        });
+        });
     });
     function set()
     {
@@ -89,6 +99,25 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
                             );
                 });
             })
+    }
+    function setPriceformat()
+    {
+        var s = $('#Order_PRICE').val();
+        $('#Order_PRICE').val('Rp '+formatNumber(s,0,2,true) );
+    }
+    
+    function setBookingFee()
+    {
+        var s = $("#Order_BOOKING_FEE").val();
+        $('#Order_BOOKING_FEE').val('Rp '+formatNumber(s,0,2,true) );
+    }
+    
+    function setDiscount()
+    {
+        var dsc = $("#Order_DISCOUNT").val();
+        var price = unformatnumber( $("#Order_PRICE").val());
+        $("#Order_DISCOUNT").val('Rp '+formatNumber(dsc,0,2,true));
+        $("#DSC").val(dsc/price*100);
     }
 </script>
 <fieldset>
@@ -140,7 +169,7 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
     <section>
         <?php echo $form->labelEx($model,'Price')?>
         <div>
-            <?php echo $form->textField($model,'PRICE')?>
+            <?php echo $form->textField($model,'PRICE',array('onchange'=>'setPriceformat()','class'=>'money'))?>
         </div>
     </section>
     <section>
@@ -148,13 +177,13 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
         <div>
             <?php echo CHtml::textField('DSC','',array('class'=>'g1'));
                 echo CHtml::label('%','asdsd', array('class'=>'g1')); 
-                echo $form->textField($model,'DISCOUNT',array('class'=>'g2'))?>
+                echo $form->textField($model,'DISCOUNT',array('class'=>'g4 money','onchange'=>'setDiscount()'))?>
         </div>
     </section>
     <section>
         <?php echo CHtml::label('Price after Disc','PADL') ?>
         <div>
-             <?php   echo CHtml::textField('pad','',array('class'=>'g2','readonly'=>'true'))?>
+             <?php   echo CHtml::textField('pad','',array('class'=>'g4 money','readonly'=>'true'))?>
         </div>
     </section>
     <section>
@@ -166,7 +195,7 @@ $form = $this->beginWidget('CActiveForm',array('id' => 'form',
     <section>
         <?php echo $form->labelEx($model,'Booking Fee') ?>
         <div>
-            <?php echo $form->textField($model,'BOOKING_FEE') ?>
+            <?php echo $form->textField($model,'BOOKING_FEE',array('class'=>'money','onchange'=>'setBookingFee()')) ?>
         </div>
     </section>
     <section>

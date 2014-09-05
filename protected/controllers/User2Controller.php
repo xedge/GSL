@@ -72,6 +72,7 @@ class User2Controller extends Controller
             $model->attributes = $_POST['User2'];
             $model->USER_ID = $modelEdited->USER_ID;
             $model->UT_ID = $modelEdited->UT_ID;
+            $model->PASSWORD = CPasswordHelper::hashPassword($model->PASSWORD);
             IF($model->save())
                 $this->redirect (array('detail','id'=>$model->USER_ID));
         }
@@ -81,6 +82,39 @@ class User2Controller extends Controller
     public function actionDetail($id) {
         $model = User2::model()->findByPk($id);
         $this->render('detail',array('model'=>$model));
+    }
+    
+    public function actionSetRoom()
+    {
+        $refloor = Floor::model()->findAll('FLOOR_NUMBER=:fl OR FLOOR_NUMBER=:fl2',
+                array(
+                    ':fl'=>'PH1',
+                    ':fl2'=>'PH2'
+                ));
+        foreach ($refloor as $florr)
+        {
+                for($i = 1; $i < 9; $i++)
+                {
+                    $room = new Room;
+                    $room->ROOM_NUMBER = $florr->FLOOR_NUMBER . sprintf(".%02s",$i);
+                    $room->FLOOR_ID = $florr->FLOOR_ID;
+                    $bol = FALSE;
+                    if($i==9)
+                    {
+                        $room->WING_ID = 2;
+                        $room->RT_ID=3;
+                        
+                        $room->ROOM_AREA_GROSS = 52.71;
+                        $bol = TRUE;
+                    }
+                    $room->STATUS = 'Available';
+                    if ($bol) {
+                       $result = $room->save();
+                       echo $result;
+                    }
+                }
+            
+        }
     }
 }
 

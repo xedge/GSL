@@ -33,7 +33,7 @@ class ExhibitionController extends Controller{
             $exh->CREATOR_USER_ID = Yii::app()->user->id;
             if($exh->save())
             {
-                $this->redirect('index');
+                $this->redirect(array('CreateCustomer'));
             }
         }
         
@@ -49,7 +49,7 @@ class ExhibitionController extends Controller{
             $exd->SUBMITTER_ID = Yii::app()->user->id;
             if($exd->save())
             {
-                $this->redirect('index');
+                $this->redirect(array('CreateCustomer'));
             }
         }
         $this->render('createExd',array('model'=>$exd));
@@ -104,5 +104,17 @@ class ExhibitionController extends Controller{
          $custom = Customer::model()->findAllByAttributes(array('EXHIBITION_DETAIL_ED_ID'=>$exd));
          echo CJSON::encode($custom);
          Yii::app()->end();
+    }
+    
+    public function actionViewCus()
+    {
+        $model = new Customer;
+        $this->render('viewCustomer',array('model'=>$model));
+    }
+    
+    public function actionCustomerTbl($exdid)
+    {
+        $model = Customer::model()->findAllByAttributes(array('EXHIBITION_DETAIL_ED_ID'=>$exdid));
+        $this->renderPartial('tblCustomer',array('model'=>$model));
     }
 }

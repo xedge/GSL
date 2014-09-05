@@ -122,7 +122,7 @@
         ?>
     </div>
     <div class="g12">
-        <?php echo CHtml::label('Total Down Payment','DP',array('class'=>'g4'));
+        <?php echo CHtml::label('Total Down Payment','DP',array('class'=>'g2'));
             echo CHtml::label(':', '',array('class'=>'g1'));
             echo CHtml::label($model->ADVANCE_PAYMENT_FEE/($model->PRICE-$model->DISCOUNT) * 100 . '%', "DPF",array('class'=>'g2'));
             echo CHtml::label('Rp. '.  number_format($model->ADVANCE_PAYMENT_FEE,2,',','.'),'DPF',array('class'=>'g5'));
@@ -130,11 +130,50 @@
     </div>
     <div class="g12">
         <?php 
-            echo CHtml::label('1st Down Payment', 'FDP',array('class'=>'g4'));
+            echo CHtml::label('1st Down Payment', 'FDP',array('class'=>'g2'));
             echo CHtml::label(':', '',array('class'=>'g1'));
-            echo CHtml::label('Rp. '. number_format($model->ADVANCE_PAYMENT_1,0,',','.'), 'FPDV',array('class'=>'g3'));
+            echo CHtml::label('Rp. '. number_format($model->ADVANCE_PAYMENT_1,2,',','.'), 'FPDV',array('class'=>'g2'));
             echo CHtml::label('Date ', '',array('class'=>'g1'));
             echo CHtml::label(': '. $model->AP1_DATE, 'FPDVD',array('class'=>'g3'));
+        ?>
+    </div>
+    <div class="g12">
+        <?php
+            echo CHtml::label("Rest of DownPayment", 'RoD',array('class'=>'g2'));
+            echo CHtml::label(':', '',array('class'=>'g1'));
+            echo CHtml::label('Rp. '.number_format($model->ADVANCE_PAYMENT,2,',','.'), 'RPDV',array('class'=>'g2'));
+            echo CHtml::label('Date Begin', '',array('class'=>'g1'));
+            echo CHtml::label(': '. $model->AP_DATE_BEGIN, 'RPDVD',array('class'=>'g2'));
+            echo CHtml::label('Date End', '',array('class'=>'g1'));
+            echo CHtml::label(': '. $model->AP_DATE_END, 'RPDVDE',array('class'=>'g2'));
+        ?>
+    </div>
+    <div class="g12">
+        <h2>Remaining Payment</h2>
+        <?php
+            if($model->RM_PT_ID!=NULL)
+            {
+                echo CHtml::label($model->rMPT->PT_NAME, '',array('class'=>'g1'));
+                if($model->rMPT->PT_ID==3)
+                {
+                    echo CHtml::label('Date Begin', '',array('class'=>'g1'));
+                    echo CHtml::label(': '. $model->RM_INSTALLMENT_DATE_BEGIN, 'RMDB',array('class'=>'g2'));
+                    echo CHtml::label('Date End', '',array('class'=>'g1'));
+                    echo CHtml::label(': '. $model->RM_INSTALLMENT_DATE_ENG, 'RMDGE',array('class'=>'g2'));
+                }
+                else
+                {
+                    echo CHtml::label('Date', '',array('class'=>'g1'));
+                    echo CHtml::label(': '. $model->RM_PAYMENT_DATE, 'RMD',array('class'=>'g2'));
+                }
+            }
+            else
+            {
+                echo CHtml::label('', '',array('class'=>'g1'));
+            }
+            echo CHtml::label(':', '',array('class'=>'g1'));
+            echo CHtml::label('Rp. '.number_format($model->RM_COST,2,',','.'), 'RMC',array('class'=>'g2'));
+            
         ?>
     </div>
 </div>

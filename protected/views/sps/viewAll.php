@@ -8,14 +8,11 @@
 
 ?>
 <script type="text/javascript">
-    $(function(){
-        $('#tabel').dataTable();
-    })
 </script>
 <div class="g12">
     <h1>Order List</h1>
     
-    <table id="tabel">
+    <table id="tabel" class="datatable">
         <thead>
             <tr>
                 <th>
@@ -23,6 +20,9 @@
                 </th>
                 <th>
                     Order Date
+                </th>
+                <th>
+                    Status
                 </th>
                 <th>
                 </th>
@@ -35,7 +35,10 @@
                     <?php echo $record->ORDER_ID?>
                 </td>
                 <td>
-                    <?php echo $record->DATE_ORDER ?>
+                    <?php echo date('d-m-Y', strtotime($record->DATE_ORDER)) ?>
+                </td>
+                <td>
+                    <?php echo $record->ORDER_STATUS ?>
                 </td>
                 <td>
                     <?php echo CHtml::link('Detail',array('sps/detail','orderId'=>$record->ORDER_ID),array('class'=>'btn'))?>
